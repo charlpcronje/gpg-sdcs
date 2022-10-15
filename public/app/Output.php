@@ -2,29 +2,38 @@
 <?php
 class Output {
     public static Output $instance;
-    public $endpoint;
-    public object $data;
     public $model;
-    public $json;
+    public $data;
 
-    public function __construct() {
-        // Get endpoint from URL (The string after the first '/')
-        if (isset($_GET['endpoint'])) {
-            $this->endpoint = $_GET['endpoint'];
-        }
-        // Check to see of there is a corresponding model.json
-        if (isset($this->endpoint) && file_exists(PATH_MODELS.DS.$this->endpoint.'json')) {
-            $this->model = file_get_contents(PATH_MODELS.DS.$this->endpoint.'json');
-            $this->json = json_decode($this->model);
-        }
+    public function __construct($endpoint) {
+        $this->initModel($endpoint);
         // Preparing the `data` property by making it an object so that I can use it like ->
         $this->data = (object)[];
-
     }
 
-    public static function getInstance(): Output {
+    /**
+     * @param $endpoint
+     * @return void
+     */
+    private function initModel($endpoint) {
+        $file = PATH_MODELS.DS.$endpoint.'.json';
+        if (!isset($this->model) && file_exists($file)) {
+            $this->model = (object)[
+                'endpoint' => $endpoint,
+                'file' => PATH_MODELS.DS.$endpoint.'.json',
+                'json' => json_decode(file_get_contents($file))
+            ];
+        }
+        print_r($this->model);
+    }
+
+    /**
+     * @param $endpoint
+     * @return Output
+     */
+    public static function getInstance($endpoint): Output {
         if (!isset(static::$instance)) {
-            static::$instance = new static;
+            static::$instance = new static($endpoint);
         }
         return static::$instance;
     }

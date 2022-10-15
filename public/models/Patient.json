@@ -1,0 +1,143 @@
+{
+    "auth": {
+        "allowed_domains": ["cronje.me","*"],
+        "allowed_ips": ["10.0.0.1"]
+    },
+    "meta": {
+        "referrer": "${REFERRER}",
+        "ip_address": "${IP_ADDRESS}",
+        "date_time": "${DATETIME}",
+        "duration": "${DURATION}"
+    },
+    "endpoint": "Patient",
+    "model_name": "Patient",
+    "description": "Capture patient details with 'Health ID Number' as the unique ID",
+    "id_field_name": "HIN",
+    "id_field_required": true,
+    "save_if_error": true,
+    "save_file": "${HIN} ${last_name} ${DATETIME} ${REVISION}",
+    "save_path": "patients/${health_card_number}/${save_file}",
+    "notify": {
+        "success": ["charl@cronje.me"],
+        "error": ["charl@cronje.me","admin@cronje.me"],
+        "all": ["indo@cronje.me"]
+    },
+    "fields": [{
+        "last_name": {
+            "type": "text",
+            "validate": {
+                "required": true,
+                "regex": "/^[a-zA-Z|\\D|\\W]{2,30}$/",
+                "hint": "This field is required, 2 or more and 30 or less Characters, A-Z and speces allowed"
+            }
+        }
+    },
+    {
+        "first_name": {
+            "type": "text",
+            "validate": {
+                "required": true,
+                "regex": "/^[a-zA-Z|\\D|\\W]{2,30}$/",
+                "hint": "This field is required, 2 or more and 30 or less Characters, A-Z and speces allowed"
+            }
+        }
+    },
+    {
+        "date_of_birth": {
+            "type": "date",
+            "validate": {
+                "required": true,
+                "format": "mm/dd/yyyy"
+            },
+            "hints": {
+                "placeholder": "Choose between M, F and Other",
+                "error": "This field is required, Choose between M, F and Other"
+            }
+        }
+    },
+    {
+        "sex": {
+            "type": "enum",
+            "validate": {
+                "required": true,
+                "options": [
+                    "M",
+                    "F",
+                    "Other"
+                ]
+            },
+            "hints": {
+                "placeholder": "Choose between M, F and Other",
+                "error" : "This field is required, Choose between M, F and Other"
+            }
+        }
+    },
+    {
+        "phone": {
+            "type": "phone_number",
+            "validate": {
+                "required": true,
+                "regex": "/^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$/"
+            },
+            "hints": {
+                "placeholder": "123-123-1239",
+                "error" : "The telephone number must be at least 10 digits and formatted like: 123-123-1239"
+            }
+        }
+    },
+    {
+        "preferred_pharmacy": {
+            "type": "enum",
+            "validate": {
+                "required": false,
+                "options": [
+                    "Y",
+                    "N"
+                ],
+                "default": "N"
+            },
+            "hints": {
+                "placeholder": "",
+                "error" : "Choose between Y and N"
+            }
+        }
+    },
+    {
+        "text_input": {
+            "type": "text",
+            "validate": {
+                "required": true,
+                "min_length": 3,
+                "max_length": 10,
+                "special_chars": false,
+                "allowed_chars": [
+                    ",",
+                    "-"
+                ],
+                "disallowed_chars": [
+                    "&"
+                ],
+                "allow_spaces": true,
+                "default": "N"
+            },
+            "hints": {
+                "placeholder": "",
+                "error" : "This is a required field, Min 3 chars, Max 10 chars, No Special Characters except for ',' and '-'"
+            }
+        }
+    }],
+    "stats": {
+        "field_count":"${FIELD_COUNT}",
+        "field_success_count": "${FIELD_SUCCESS_COUNT}",
+        "field_fail_count": "${FIELD_FAIL_COUNT}",
+        "file_count": "${FILE_COUNT}",
+        "file_success_count": "${FILE_SUCCESS_COUNT}",
+        "file_fail_count": "${FILE_FAIL_COUNT}"
+    },
+    "errors": {
+        "fields_failed": ["${FIELDS_FAILED}"],
+        "field_fail_reasons": ["${FIELD_FAIL_REASONS}"],
+        "files_failed": ["${FILES_FAILED}"],
+        "files_fail_reasons": ["${FILES_FAIL_REASONS}"]
+    }
+}

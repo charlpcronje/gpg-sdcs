@@ -1,23 +1,18 @@
 <?php
 
-class ParseJson {
+class ParseJson extends App {
     private $controller;
     private $object;
     private $json;
     private $status;
 
     function __construct($endpoint) {
-        $this->model = $file;
+        $this->model = $this->output->model->endpoint;
         $this->loadController();
-        $this->parseJson();
     }
 
-    private function parseJson() {
-        $this->json = file_get_contents
-    }
-
-    private function loadController() {
-        $this->object = new $this->controller();
+    private function loadParser() {
+        $this->object = new $this->output->model->endpoint();
     }
 
     public static function parse($file) {

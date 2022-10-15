@@ -1,9 +1,9 @@
 <?php
 class Autoloader {
-    private array $places = [
+    public static array $places = [
         'PATH_VIEWS',
         'PATH_MODELS',
-        'PATH_CONTROLLERS',
+        'PATH_PARSERS',
         'PATH_SYSTEM',
         'PATH_HELPERS',
         'PATH_APP',
@@ -11,8 +11,11 @@ class Autoloader {
     ];
     public static function register() {
         spl_autoload_register(function ($class) {
-            foreach($this->places as $place) {
-                $file = $place.DS.$class.'.php';
+            foreach(self::$places as $place) {
+                $file = constant($place).DS.$class.'.php';
+                if ($place == 'PATH_PARSERS') {
+                    $file = constant($place).DS.$class.'Parser.php';
+                }
                 if (file_exists($file)) {
                     require $file;
                     return true;

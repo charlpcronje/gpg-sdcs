@@ -1,6 +1,8 @@
 <?php
 
 class Input {
+    public static Input $_instance;
+
     public function isset($inputKey): bool {
         if (is_array($inputKey) && count($inputKey) == 1) {
             $inputKey = (string)$inputKey[0];
@@ -57,8 +59,16 @@ class Input {
         }
     }
 
-    public function __call($name, $arguments) {
-        $this->request($name,$arguments);
+    public static function instance() {
+        if (!isset(static::$_instance)) {
+            static::$_instance = new static();
+        }
+        return static::$_instance;
+    }
+
+
+    public static function val($inputKey, $default) {
+        return Input::instance()->request($inputKey,$default);
     }
 
     public function request($inputKey = null,$default = null) {
