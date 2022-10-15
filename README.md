@@ -76,6 +76,6 @@ Lastly, I will write every submission to logs with timestamps, fields received a
 
 ---
 
-For this I would like to charge you $170.
+__For this I would like to charge you $170__
 
-Please let me know, I am going to eat lunch quickly, and then Ill be back to begin if it is fine with you.
+_Please let me know, I am going to eat lunch quickly, and then Ill be back to begin if it is fine with you._

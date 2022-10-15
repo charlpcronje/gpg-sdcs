@@ -1,0 +1,18 @@
+# Example of setting a .env variable in this file
+# setEnv document.root %{DOCUMENT_ROOT}
+
+# Redirect all HTTP traffic to HTTPS
+# RewriteEngine On
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+RewriteEngine On
+
+# Remove trailing slash
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R] # <- for test, for prod use [L,R=301]
+
+# Send all request to the index file
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]*)(.*)$ index.php?endpoint=$1&method=$2 [QSA]
