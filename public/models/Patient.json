@@ -1,34 +1,18 @@
 {
-    "auth": {
-        "allowed_domains": ["cronje.me","*"],
-        "allowed_ips": ["10.0.0.1"]
-    },
-    "meta": {
-        "referrer": "${REFERRER}",
-        "ip_address": "${IP_ADDRESS}",
-        "date_time": "${DATETIME}",
-        "duration": "${DURATION}"
-    },
-    "endpoint": "Patient",
-    "model_name": "Patient",
-    "description": "Capture patient details with 'Health ID Number' as the unique ID",
-    "id_field_name": "HIN",
-    "id_field_required": true,
-    "save_if_error": true,
-    "save_file": "${HIN} ${last_name} ${DATETIME} ${REVISION}",
-    "save_path": "patients/${health_card_number}/${save_file}",
-    "notify": {
-        "success": ["charl@cronje.me"],
-        "error": ["charl@cronje.me","admin@cronje.me"],
-        "all": ["indo@cronje.me"]
+    "extends": {
+        "schema": "Base",
+        "exclude": []
     },
     "fields": [{
         "last_name": {
             "type": "text",
             "validate": {
                 "required": true,
-                "regex": "/^[a-zA-Z|\\D|\\W]{2,30}$/",
-                "hint": "This field is required, 2 or more and 30 or less Characters, A-Z and speces allowed"
+                "regex": "/^[a-zA-Z|\\D|\\W]{2,30}$/"
+            },
+            "hints": {
+                "placeholder": "Last Name",
+                "error": "This field is required, 2 or more and 30 or less Characters, A-Z and spaces allowed"
             }
         }
     },
@@ -37,7 +21,10 @@
             "type": "text",
             "validate": {
                 "required": true,
-                "regex": "/^[a-zA-Z|\\D|\\W]{2,30}$/",
+                "regex": "/^[a-zA-Z|\\D|\\W]{2,30}$/"
+            },
+            "hints": {
+                "placeholder": "First Name",
                 "hint": "This field is required, 2 or more and 30 or less Characters, A-Z and speces allowed"
             }
         }
@@ -101,43 +88,5 @@
                 "error" : "Choose between Y and N"
             }
         }
-    },
-    {
-        "text_input": {
-            "type": "text",
-            "validate": {
-                "required": true,
-                "min_length": 3,
-                "max_length": 10,
-                "special_chars": false,
-                "allowed_chars": [
-                    ",",
-                    "-"
-                ],
-                "disallowed_chars": [
-                    "&"
-                ],
-                "allow_spaces": true,
-                "default": "N"
-            },
-            "hints": {
-                "placeholder": "",
-                "error" : "This is a required field, Min 3 chars, Max 10 chars, No Special Characters except for ',' and '-'"
-            }
-        }
-    }],
-    "stats": {
-        "field_count":"${FIELD_COUNT}",
-        "field_success_count": "${FIELD_SUCCESS_COUNT}",
-        "field_fail_count": "${FIELD_FAIL_COUNT}",
-        "file_count": "${FILE_COUNT}",
-        "file_success_count": "${FILE_SUCCESS_COUNT}",
-        "file_fail_count": "${FILE_FAIL_COUNT}"
-    },
-    "errors": {
-        "fields_failed": ["${FIELDS_FAILED}"],
-        "field_fail_reasons": ["${FIELD_FAIL_REASONS}"],
-        "files_failed": ["${FILES_FAILED}"],
-        "files_fail_reasons": ["${FILES_FAIL_REASONS}"]
-    }
+    }]
 }

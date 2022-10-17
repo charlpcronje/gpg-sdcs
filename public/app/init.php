@@ -1,6 +1,11 @@
 <?php
-include PATH_SYSTEM.DS.'DotEnv.php';
-include PATH_HELPERS.DS.'general.php';
-include PATH_CONFIG.DS.'base.php';
-include PATH_SYSTEM.DS.'Log.php';
-include PATH_SYSTEM.DS.'ParseJson.php';
+include __DIR__.DIRECTORY_SEPARATOR.'system'.DIRECTORY_SEPARATOR.'Constants.php';
+include __DIR__.DS.'system'.DS.'DotEnv.php';
+include __DIR__.DS.'system'.DS.'Autoloader.php';
+include __DIR__.DS.'helpers'.DS.'logs.php';
+include __DIR__.DS.'helpers'.DS.'general.php';
+include __DIR__.DS.'helpers'.DS.'http.php';
+include __DIR__.DS.'helpers'.DS.'state.php';
+include __DIR__.DS.'config'.DS.'errors.php';
+include __DIR__.DS.'system'.DS.'Log.php';
+include __DIR__.DS.'system'.DS.'ParseJson.php';

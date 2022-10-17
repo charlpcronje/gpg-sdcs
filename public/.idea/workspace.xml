@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="f20dfa97-d4bf-4b38-94d2-3c3c398fed8f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/system/DataTraits.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Post.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/parsers/PatientParser.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/parsers/PostParser.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/layout.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/wiki.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/helpers/state.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/system/traits/DataTraits.bak.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/system/traits/InputTraits.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/system/traits/RequestTraits.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/system/traits/SessionTraits.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/system/traits/SetterTraits.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/models.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/models.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/projectRequirements.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/App.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/App.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Output.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Output.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config/base.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/errors.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/helpers/general.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/helpers/general.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/helpers/logs.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/helpers/logs.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/init.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/init.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/system/Autoloader.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/system/Autoloader.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/system/Constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/system/Constants.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/system/DataTraits.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/system/traits/DataTraits.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/system/DotEnv.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/system/DotEnv.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/system/Input.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/system/Input.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/system/ParseJson.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/system/ParseJson.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/addPatient.json" beforeDir="false" afterPath="$PROJECT_DIR$/models/Patient.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/layout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Patient.json" beforeDir="false" afterPath="$PROJECT_DIR$/models/Patient.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Post.json" beforeDir="false" afterPath="$PROJECT_DIR$/models/Post.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/layout.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/layout.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
-    <execution />
+  <component name="ComposerSettings" synchronizationState="DONT_SYNCHRONIZE">
+    <execution>
+      <interpreter composer="composer" />
+    </execution>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -36,9 +49,11 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
+  <component name="PhpWebServerValidation" path_to_validation_script="C:\www\www\sdc\public" selected_validation_type="LOCAL" web_path_to_validation_script="http://sdc.test" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2G6XaO0qk3yeoJvwdAXE0mFqDX9" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -48,25 +63,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/www/www/sdc/public/parsers",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.build",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/www/www/sdc/public/app/traits&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.webide.settings.project.settings.php&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\www\www\sdc\public\app\traits" />
       <recent name="C:\www\www\sdc\public\parsers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\www\www\sdc\public\app\system\traits" />
       <recent name="C:\www\www\sdc\public\parsers" />
       <recent name="C:\www\www\sdc\public\app\system\logger" />
       <recent name="C:\www\www\sdc\public\app\log" />
@@ -84,7 +101,8 @@
       <workItem from="1665711067967" duration="17402000" />
       <workItem from="1665762843944" duration="6224000" />
       <workItem from="1665785636255" duration="17326000" />
-      <workItem from="1665808017253" duration="25360000" />
+      <workItem from="1665808017253" duration="39311000" />
+      <workItem from="1665907078601" duration="28131000" />
     </task>
     <servers />
   </component>

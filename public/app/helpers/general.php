@@ -1,7 +1,9 @@
 <?php
 
 function env($var) {
-    return $_ENV[$var];
+    $env = new DotEnv();
+    var_dump($_ENV);
+    return $_ENV['ERROR_REPORTING'];
 }
 
 function isClosure($var): bool {

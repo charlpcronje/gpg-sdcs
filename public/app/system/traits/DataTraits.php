@@ -135,8 +135,7 @@ trait DataTraits {
     }
 
     public static function dataKeyExists($dotName,$data = null): bool {
-        $app = new App();
-        return $app->dataKeyExist($dotName,$data);
+        return App::getInstance()->dataKeyExist($dotName,$data);
     }
 
     public function setArray(&$array, $key, $value = null) {
@@ -255,12 +254,11 @@ trait DataTraits {
     }
 
     public static function escapedDotName($dotName) {
-        $app = new App();
-        return $app->checkForEscapedDots($dotName)->dotName;
+        return App::getInstance()->checkForEscapedDots($dotName)->dotName;
     }
 
     public static function data($dotName,$value = null,$data = null) {
-        $app = new App();
+        $app = App::getInstance();
         if (isset($value)) {
             return $app->setData($dotName,$value,$data);
         }
@@ -268,7 +266,7 @@ trait DataTraits {
     }
 
     public static function forgetKey($dotName,$data = null) {
-        return (new App())->getData($dotName,null,$data,true);
+        return App::getInstance()->getData($dotName,null,$data,true);
     }
 
     public function dataKeyExist($dotName,$data = null): bool {

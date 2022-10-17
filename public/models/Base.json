@@ -1,0 +1,68 @@
+{
+    "auth": {
+        "allowed_domains": [
+            "*"
+        ],
+        "allowed_ips": [
+            "*"
+        ]
+    },
+    "meta": {
+        "referrer": "${REFERRER}",
+        "ip_address": "${IP_ADDRESS}",
+        "date_time": "${DATETIME}",
+        "duration": "${DURATION}"
+    },
+    "storage": {
+        "endpoint": "Patient",
+        "model_name": "Patient",
+        "description": "Capture patient details with 'Health ID Number' as the unique ID",
+        "id_field_name": "HIN",
+        "id_field_required": true,
+        "save_if_error": true,
+        "save_file": "${HIN} ${last_name} ${DATETIME} ${REVISION}",
+        "save_path": "patients/${health_card_number}/${save_file}"
+    },
+    "notify": {
+        "success": [],
+        "error": [],
+        "all": []
+    },
+    "fields": [
+        {
+            "HIN": {
+                "type": "HIN",
+                "validate": {
+                    "required": true,
+                    "regex": "/^[0-9]{10,10}$/"
+                },
+                "hints": {
+                    "placeholder": "Last Name",
+                    "error": "This field is required, 2 or more and 30 or less Characters, A-Z and spaces allowed"
+                }
+            }
+        }
+    ],
+    "stats": {
+        "field_count": "${FIELD_COUNT}",
+        "field_success_count": "${FIELD_SUCCESS_COUNT}",
+        "field_fail_count": "${FIELD_FAIL_COUNT}",
+        "upload_count": "${UPLOAD_COUNT}",
+        "upload_success_count": "${UPLOAD_SUCCESS_COUNT}",
+        "upload_fail_count": "${UPLOAD_FAIL_COUNT}"
+    },
+    "errors": {
+        "fields_failed": [
+            "${FIELDS_FAILED}"
+        ],
+        "field_fail_reasons": [
+            "${FIELD_FAIL_REASONS}"
+        ],
+        "uploads_failed": [
+            "${UPLOAD_FAILED}"
+        ],
+        "uploads_fail_reasons": [
+            "${UPLOAD_FAIL_REASONS}"
+        ]
+    }
+}

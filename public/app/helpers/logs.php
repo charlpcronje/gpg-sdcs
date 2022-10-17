@@ -68,7 +68,7 @@ function getCallingClass() {
  * @param string $message
  * @return void
  */
-function log(string $message) {
+function note(string $message) {
     return Log::info($message);
 }
 
@@ -80,7 +80,7 @@ function debug(string $message) {
     Log::debug($message);
 }
 
-function error(string $message) {
+function errorLog(string $message) {
     Log::error($message);
 }
 

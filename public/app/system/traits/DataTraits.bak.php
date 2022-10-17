@@ -1,78 +1,6 @@
 <?php
-// All application classes should extend this one
-class App {
-    use SetterTraits;
-    use DataTraits;
-    use SessionTraits;
-    use InputTraits;
-    use RequestTraits;
-    public $output;
 
-    public function __construct() {
-        note(__CLASS__.'__construct');
-        $this->output = Output::getInstance();
-
-        $this->data('model',$this->model('json'));
-        $this->data('request.method',$_SERVER['REQUEST_METHOD']);
-
-        $this->ref();
-    }
-
-    /**
-     * @param $class
-     * @return mixed|null
-     */
-    public function ref($class = null) {
-        // Adds the current class but not App, which ever class is extending app as a reference to use again.
-        if ($class == null && __CLASS__ != 'App' && !$this->dataKeyExist('ref.'.__CLASS__)) {
-            $this->data('ref.'.__CLASS__,$this);
-        }
-        if ($this->dataKeyExist('ref.'.$class)) {
-            return $this->data('ref.'.$class);
-        }
-        return null;
-    }
-
-    /**
-     * @param $context string | null
-     * @return object
-     */
-    public function model(string $context = null): object {
-        if (isset($context)) {
-            return $this->data('model.json'.$context);
-        }
-        return $this->data('model');
-    }
-
-    public function __set($name,$value) {
-        if (!isset($this->output->data)) {
-            $this->output->data = (object)[];
-        }
-        $this->output->data->$name = $value;
-        return $this;
-    }
-
-    public function __get($name) {
-        if (isset($this->output->data) && isset($this->output->data->$name)) {
-            return $this->output->data->$name;
-        } else {
-            return null;
-        }
-    }
-
-    public static function parseTemplate($buffer) {
-        return $buffer;
-    }
-
-    public function render() {
-        ob_start(array('self', 'parseTemplate'));
-        header("Content-Type: text/html");
-        include PATH_VIEWS.DS.
-        $buffer = ob_get_contents();
-        ob_end_clean();
-        return $buffer;
-    }
-
+trait DataTraitsBak {
     /*
     |--------------------------------------------------------------------------
     | Set Data to Singleton $this->output->data
@@ -80,15 +8,15 @@ class App {
     |
     | The data to iterate through can also be specified by adding a 3rd param
     | @param string $dotName is dot notation string, each '.' separates an
-    | object but in this notation you can also select arrays by adding a ':'
-    | So the string may look something like:
+    | object but in this notation you can also select arrays by adding a ':' 
+    | So the string may look something like: 
     | -------------------------------------------------------------------------
     | "person.hobbies:0.hobbyName" Equal to "$person->hobbies[0]->hobbyName"
-    |
-    | @param vector $value is the value to set equal to the object
+    | 
+    | @param vector $value is the value to set equal to the object 
     | specified by $dotName.
     */
-    public function setData($dotName,$value,$data = null): App {
+    public function setData($dotName,$value,$data = null,$duration = 0) {
         $checkResult      = $this->checkForEscapedDots($dotName);
         if ($checkResult->strEscaped) {
             $escapedDots      = explode('.',$checkResult->dotName);
@@ -112,9 +40,9 @@ class App {
             // Check if array is specified by using the ':' operator
             $array = explode(':',$dot,2);
             $dot   = $array[0];
-
+            
             /* If sizeof($array) > 1 it means that an array was found in this dot,
-             * so the type is being set to array here so that I'm not trying to handle an
+             * so the type is being set to array here so that i'm not trying to handle an
              * object like an array */
             if (count($array) > 1) {
                 // Add Array to Object
@@ -125,13 +53,15 @@ class App {
             } else {
                 // Add Object to Object
                 if (!isset($data->{$dot}) || !is_object($data->{$dot})) {
-                    if (!isset($data)) $data = (object)[];
-                    $data->{$dot} = (object)[];
+                    if (!isset($data)) {
+                        $data = new \stdClass();
+                    }
+                    $data->{$dot} = new \stdClass();
                 }
                 // Set $data to combined object
                 $data = $data->{$dot};
             }
-
+            
             // Add Array keys to object
             if (count($array) > 1) {
                 $data = $this->setArray($data->{$dot},$array[1]);
@@ -139,11 +69,11 @@ class App {
         }
         // Assign the last dot
         $dot = array_shift($dots);
-
+        
         // Check if there are any array is the last dot
         $array = explode(':',$dot,2);
         $dot = $array[0];
-
+        
         if (count($array) > 1) {
             $this->setArray($data->{$dot},$array[1],$value);
         } else {
@@ -154,7 +84,7 @@ class App {
         return $this;
     }
 
-    private function checkForEscapedDots($dotName): object {
+    private function checkForEscapedDots($dotName) {
         $dots             = explode('.',$dotName);
         $escapedDots      = [];
         $escapeBeginFound = false;
@@ -206,10 +136,11 @@ class App {
         ];
     }
 
-    public static function dataKeyExists($dotName,$data = null): bool {
-        return (new App())->dataKeyExist($dotName,$data);
+    public static function dataKeyExists($dotName,$data = null) {
+        $core = new Heepp();
+        return $core->dataKeyExist($dotName,$data);
     }
-
+    
     public function setArray(&$array, $key, $value = null) {
         if ($key === null) {
             $array = $value;
@@ -217,11 +148,11 @@ class App {
         }
         $keys = explode(':', $key);
         while (count($keys) > 1) {
-            $key = array_shift($keys);
-            if (!isset($array[$key]) || !is_array($array[$key])) {
-                $array[$key] = array();
-            }
-            $array = &$array[$key];
+          $key = array_shift($keys);
+          if (!isset($array[$key]) || !is_array($array[$key])) {
+            $array[$key] = array();
+          }
+          $array = &$array[$key];
         }
         if ($value !== null) {
             if (is_array($array)) {
@@ -229,11 +160,10 @@ class App {
             }
         }
         if (is_array($array)) {
-            return $array[array_shift($keys)] = (object)[];
+            return $array[array_shift($keys)] = new \stdClass();
         }
-        return $array;
     }
-
+    
     public function getArray(&$array,$key,$default = null,$forget = false) {
         if ($key === null) {
             return $array;
@@ -254,24 +184,24 @@ class App {
         return $array;
     }
 
-    /*
-   |--------------------------------------------------------------------------
-   | Get Data to Singleton $this->output->data
-   |--------------------------------------------------------------------------
-   |
-   | The data to iterate through can also be specified by adding a 2nd param
-   | @param string $dotName is dot notation string, each '.' separates an
-   | object but in this notation you can also select arrays by adding a ':'
-   | So the string may look something like:
-   | -------------------------------------------------------------------------
-   | "person.hobbies:0.hobbyName" Equal to "$person->hobbies[0]->hobbyName"
-   |
-   | @param boolean (optional) $forget, if $forget is set to true the value
-   | will be deleted from the output singleton as soon as it is retrieved one
-   | last time
-   */
+     /*
+    |--------------------------------------------------------------------------
+    | Get Data to Singleton $this->output->data
+    |--------------------------------------------------------------------------
+    |
+    | The data to iterate through can also be specified by adding a 2rd param
+    | @param string $dotName is dot notation string, each '.' seperates an 
+    | object but in this notation you can also select arrays by adding a ':' 
+    | So the string may look something like: 
+    | -------------------------------------------------------------------------
+    | "person.hobbies:0.hobbyName" Equal to "$person->hobbies[0]->hobbyName"
+    | 
+    | @param boolean (optional) $forget, if $forget is set to true the value 
+    | will be deleted from the output singleton as soon as it is retrieved one
+    | last time 
+    */
     public function getData($dotName,$default = null,$data = null,$forget = false) {
-        $checkResult          = $this->checkForEscapedDots($dotName);
+        $checkResult      = $this->checkForEscapedDots($dotName);
         if ($checkResult->strEscaped) {
             $escapedDots      = explode('.',$checkResult->dotName);
             $dots             = [];
@@ -326,38 +256,91 @@ class App {
         return null;
     }
 
-    public static function escapedDotName($dotName) {
-        return (new App())->checkForEscapedDots($dotName)->dotName;
+    public function getDataNew($dotName,$default = null,$data = null,$forget = false,$closureArguments = []) {
+        $checkResult      = $this->checkForEscapedDots($dotName);
+        if ($checkResult->strEscaped) {
+            $escapedDots      = explode('.',$checkResult->dotName);
+            $dots             = [];
+            foreach($escapedDots as $escapedDot) {
+                $dots[] = str_replace('#$#','.',$escapedDot);
+            }
+        } else {
+            $dots = explode('.',$dotName);
+        }
+
+        if ($data === null && isset($this->output)) {
+            $data = $this->output->data;
+        }
+        // Repeat until the second last dot
+        while (count($dots) > 1) {
+            $dot = array_shift($dots);
+            $dot  = str_replace('#$#','.',$dot);
+            $array = explode(':',$dot,2);
+            $dot = $array[0];
+            if (count($array) > 1) {
+                $data = $this->getArray($data->{$dot},$array[1]);
+            } else {
+                if (isset($data->{$dot})) {
+                    $data = $data->{$dot};
+                }
+            }
+        }
+        $dot = array_shift($dots);
+        $array = explode(':',$dot,2);
+        $dot = $array[0];
+
+        if (count($array) > 1) {
+            if ($forget) {
+                $response = $this->getArray($data->{$dot},$array[1],$default,true);
+            } else {
+                $response = $this->getArray($data->{$dot},$array[1],$default);
+            }
+            return $response;
+        }
+
+        if (!empty($dot) && isset($data->{$dot}) && $data->{$dot} != null) {
+            $response = $data->{$dot};
+            if ($forget) {
+                unset($data->{$dot});
+            }
+            if (isClosure($response)) {
+                return $response->__invoke();
+            }
+            return $response;
+        }
+        return null;
     }
 
+    public static function escapedDotName($dotName) {
+        $core = new Heepp();
+        return $core->checkForEscapedDots($dotName)->dotName;
+    }
+    
     public static function data($dotName,$value = null,$data = null) {
+        $core = new Heepp();
         if (isset($value)) {
-            return (new App())->setData($dotName,$value,$data);
+            return $core->setData($dotName,$value,$data);
         }
-        return (new App())->getData($dotName,null,$data);
+        return $core->getData($dotName,null,$data);
     }
 
     public static function forgetKey($dotName,$data = null) {
-         return (new App())->getData($dotName,null,$data,true);
+        return (new Heepp())->getData($dotName,null,$data,true);
     }
-
-    public function dataKeyExist($dotName,$data = null): bool {
+    
+    public function dataKeyExist($dotName,$data = null) {
         if ($this->getData($dotName,null,$data) !== null) {
             return true;
         }
         return false;
     }
-
+    
     public function forget($dotName,$data = null) {
         return $this->getData($dotName,null,$data,true);
     }
-
+    
     // @alias for setData but only sets values to $this->output-data singleton
     public function set($dotName,$value) {
         $this->setData($dotName,$value);
-    }
-
-    public function filterList() {
-        return json_encode(filter_list());
     }
 }

@@ -4,6 +4,7 @@ define('PATH_ROOT',getcwd());
 const PATH_APP = PATH_ROOT . DS . 'app';
 const PATH_HELPERS = PATH_APP . DS . 'helpers';
 const PATH_SYSTEM = PATH_APP . DS . 'system';
+const PATH_SYSTEM_TRAITS = PATH_SYSTEM . DS . 'traits';
 const PATH_CONFIG = PATH_APP . DS . 'config';
 const PATH_PARSERS = PATH_ROOT . DS . 'parsers';
 const PATH_MODELS = PATH_ROOT . DS . 'models';

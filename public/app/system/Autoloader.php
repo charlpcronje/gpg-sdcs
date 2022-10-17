@@ -7,7 +7,8 @@ class Autoloader {
         'PATH_SYSTEM',
         'PATH_HELPERS',
         'PATH_APP',
-        'PATH_UPLOAD_EXCEPTIONS'
+        'PATH_UPLOAD_EXCEPTIONS',
+        'PATH_SYSTEM_TRAITS'
     ];
     public static function register() {
         spl_autoload_register(function ($class) {

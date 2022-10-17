@@ -1,6 +1,6 @@
 <?php
-include './app/system/Constants.php';
-include PATH_SYSTEM.DS.'Autoloader.php';
+include __DIR__.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'init.php';
 
-$app = new App(Input::val('endpoint','Post'));
+echo json_encode(filter_list());
+$app = new App();
 

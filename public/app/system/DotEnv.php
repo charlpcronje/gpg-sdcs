@@ -1,314 +1,248 @@
 <?php
+include(__DIR__.DS.'DotEnv'.DS.'Exception.php');
+include(__DIR__.DS.'DotEnv'.DS.'InvalidPathException.php');
 
-/**
- * Class DotEnv - Reads, parses .env files.
- * It can update the $_ENV, $_SERVER and env.
- * It can also define the found values as php constants if they are not defined just yet
- * $dot_env->init(['prefix' => 'APP_SANDBOX_', 'scan_dirs' => [ APP_SANDBOX_PROJECT_BASE_DIR, ] ]);
- */
-class DotEnv {
-    /**
-     * @var array
-     */
-    private array $params = [];
-    public array $processed = [];
+class DotEnv extends \ArrayObject {
 
-    /**
-     * Singleton
-     * @staticvar static $instance
-     * @return static
-     */
-    public static function instance(): ?DotEnv {
-        static $instance = null;
-        if (is_null($instance)) {
-            $instance = new static();
+    private $_path;
+    private $_file;
+    private $_dir;
+    private $_data;
+
+    public function __construct($path = PATH_ROOT, $setEnvironmentVariables = true, bool $processSections = true, int $scannerMode = INI_SCANNER_TYPED)  {
+        $this->setPath($path);
+        $data = self::parseFile($this->_file, $processSections, $scannerMode);
+        $this->setData($data);
+        if ($setEnvironmentVariables){
+            self::setEnvironmentVariables($this->_data);
         }
-        return $instance;
     }
 
-    public function init($params = []) {
-        $this->params = $params;
+    public function setPath($path) {
+        if (is_dir($path)){
+            $path = rtrim($path, '/') . '/';
+            $this->_path = $path;
+            $this->setDir($path);
+        } else if (file_exists($path)) {
+            $this->_path = $path;
+            $this->setFile($path);
+        }
     }
 
-    /**
-     * Updates env, $_ENV, $_SERVER with the passed data. If value is non a scalar it will be json encoded.
-     * @param array $data
-     * @param bool $override
-     * @return bool
-     */
-    public function updateEnv(array $data = [], bool $override = false): bool {
-        if (empty($data) || !is_array($data)) {
-            return false;
+    public function setDir(string $dir){
+        $this->_dir = $dir;
+        if (!is_dir($this->_dir)){
+            throw new InvalidPathException("$this->_file is not an existing directory.");
         }
-        $prefix = '';
-
-        if (!empty($this->params['prefix'])) {
-            $prefix = $this->formatPrefix($this->params['prefix']);
+        $this->_file = $dir . ".env";
+        if (!file_exists($this->_file)){
+            throw new InvalidPathException("$this->_file is not an existing file.");
         }
+    }
 
-        foreach ($data as $k => $v) {
-            if (!$this->hasPrefix($prefix, $k)) {
-                $k = $prefix . $k;
-            }
-            $v = is_scalar($v) ? $v : json_encode($v);
-            $this->processed[$k] = $v;
+    public function setFile(string $file){
+        $this->_dir = dirname($file);
+        $this->_file = $file;
+        if (!file_exists($this->_file)){
+            throw new InvalidPathException("$this->_file is not an existing file.");
+        }
+    }
 
-            if ($override) {
-                putenv("$k=" . $v);
-                $_ENV[$k] = $v;
-                $_SERVER[$k] = $v;
+    public function loadArray(array $array, bool $setEnvironmentVariables, int $scannerMode = INI_SCANNER_TYPED){
+        if ($scannerMode == INI_SCANNER_TYPED){
+            $array = self::scanArrayTypes($array);
+        }
+        $this->_data = $array;
+        if ($setEnvironmentVariables){
+            self::setEnvironmentVariables($this->_data);
+        }
+    }
+
+    public static function scanArrayTypes(array $array){
+        foreach ($array as $property => $value){
+            if (is_array($value)){
+                $value = self::scanArrayTypes($array);
             } else {
-                if (getenv($k) == '') {
-                    putenv("$k=" . $v);
-                }
-
-                if (!isset($_ENV[$k])) {
-                    $_ENV[$k] = $v;
-                }
-
-                if (!isset($_SERVER[$k])) {
-                    $_SERVER[$k] = $v;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @param string $inpKey
-     * @param string $prefix
-     * @return string
-     */
-    public function get(string $inpKey, string $prefix = ''): string {
-        if (empty($prefix) && !empty($this->params['prefix'])) {
-            $prefix = $this->params['prefix'];
-        }
-
-        // Let's see if this is two keys actually. APP_ENV,ENV
-        if ((strpos($inpKey, ',') !== false) || (strpos($inpKey, '|') !== false)) {
-            $multi_keys = preg_split('#\s*[,|]+\s*#si', $inpKey);
-
-            foreach ($multi_keys as $key) {
-                $val = $this->get($key, $prefix);
-                if (!empty($val)) {
-                    return $val;
+                if (is_string($value)){
+                    switch ($value) {
+                        case 'true':
+                        case 'yes':
+                        case '1':
+                            $value = true;
+                        break;
+                        case 'false':
+                        case 'no':
+                        case '0':
+                            $value = false;
+                        break;
+                    }
                 }
             }
-            return ''; // nothing found
+            $array[$property] = $value;
         }
+    }
 
-        $key = $this->formatPrefix($inpKey);
-        $var_name = $this->formatPrefix($prefix . $key);
-        $key_no_pref = str_replace($prefix, '', $key);
+    public function loadString(string $string, bool $setEnvironmentVariables = true, bool $processSections = true, int $scannerMode = INI_SCANNER_TYPED){
+        $data = self::parseString($string, $processSections, $scannerMode);
+        $this->setData($data);
+        if ($setEnvironmentVariables){
+            self::setEnvironmentVariables($this->_data);
+        }
+    }
 
-        foreach ([ $key, $var_name, $key_no_pref, ] as $v) {
-            $v = trim($v, '_-'); // sometimes keys have leading/trailing chars
+    public static function parseFile(string $file, bool $processSections = true, int $scannerMode = INI_SCANNER_TYPED):array{
+        return parse_ini_file($file, $processSections, $scannerMode);
+    }
 
-            // Look for constant
-            if (defined($v)) {
-                return constant($v);
-            }
+    public static function parseString(string $string, bool $processSections = true, int $scannerMode = INI_SCANNER_TYPED):array{
+        return parse_ini_string($string, $processSections, $scannerMode);
+    }
 
-            // Look for Environment Variable
-            if (!empty($_ENV[$v])) {
-                return $_ENV[$v];
-            }
-
-            // Look for Server Variable
-            if (!empty($_SERVER[$v])) {
-                return $_SERVER[$v];
-            }
-            $val = getenv($v);
-
-            if (!empty($val)) {
-                return $val;
-            }
-
-            // Case-sensitive search in const's. The const must end in the searched keyword.
-            $allConst = get_defined_constants();
-            $keys = preg_grep(sprintf('#%s$#s', preg_quote($v, '#')), array_keys($allConst));
-
-            if (!empty($keys) && count($keys) == 1) { // one match
-                $found_key = array_shift($keys); // id could be anything and not necessarily 0
-                return $allConst[$found_key];
-            }
-
-            // Partial env match. Trailing
-            if (version_compare(phpversion(), '7.1', '>=')) {
-                $allEnvs = getenv();
-                $keys = preg_grep(sprintf('#%s$#si', preg_quote($v, '#')), array_keys($allEnvs));
-
-                if (!empty($keys) && count($keys) == 1) { // one match
-                    $found_key = array_shift($keys); // id could be anything and not necessarily 0
-                    return $allEnvs[$found_key];
+    public static function setEnvironmentVariables($iterable, string $accessName=""){
+        foreach ($iterable as $variable => $value){
+            if (is_array($value) || is_object($value)){
+                if (empty($accessName)){
+                    $accessName = $variable;
+                } else {
+                    $accessName .= "_" . $variable;
                 }
-            }
-        }
-        return '';
-    }
-
-    /**
-     * @param string $prefix
-     * @param $str
-     * @return bool
-     */
-    public function hasPrefix(string $prefix, $str): bool {
-        return !empty( $prefix) && strcasecmp($prefix,substr( $str, 0, strlen($prefix))) == 0;
-    }
-
-    /**
-     * Defines php const's based on the names. If prefix is passed it will be PREPENDED to each const
-     * @param string $prefix
-     * @return string
-     */
-    public function formatPrefix(string $prefix = ''): string {
-        $prefix = empty($prefix) ? '' : trim($prefix);
-        if (empty($prefix)) {
-            return '';
-        }
-
-        if (substr($prefix, -1, 1) != '_') { // Let's append underscore automatically if not passed.
-            $prefix .= '_';
-        }
-
-        $prefix = preg_replace('#\W#si', '_', $prefix);
-        $prefix = preg_replace('#_+#si', '_', $prefix);
-        return strtoupper($prefix);
-    }
-
-    /**
-     * Defines php const based on the names. If prefix is passed it will be PREPENDED to each const
-     * @param array $data
-     * @param string $prefix
-     * @return bool
-     */
-    public function defineConst(array $data = [], string $prefix = ''): bool {
-        if (empty($data) || !is_array($data)) {
-            return false;
-        }
-
-        if (empty($prefix) && !empty($this->params['prefix'])) {
-            $prefix = $this->params['prefix'];
-        }
-        $prefix = $this->formatPrefix($prefix);
-
-        foreach ($data as $k => $v) {
-            if (!$this->hasPrefix($prefix, $k)) {
-                $k = $prefix . $k;
-            }
-            if (defined($k)) {
-                continue;
-            }
-            $v = is_scalar($v) ? $v : json_encode($v);
-            define($k, $v);
-            $this->processed[$k] = $v;
-        }
-        return true;
-    }
-
-    /**
-     * Reads the .env file if it finds it. Skips comments and empty lines.
-     * The keys are UPPERCASE.
-     *
-     * @param string $file
-     * @return array
-     */
-    public function read(string $file = ''): array {
-        $data = [];
-        if (empty($file)) {
-            $found = 0;
-            $files = [];
-
-            // Does the developer need to start checking from specific folders?
-            if (!empty($this->params['scan_dirs'])) {
-                $scan_dirs = (array) $this->params['scan_dirs'];
-
-                foreach ($scan_dirs as $scan_dir) {
-                    $files[] = rtrim($scan_dir, '/') . '/.env';
+                self::setEnvironmentVariables($value, $accessName);
+            } else {
+                if (!empty($accessName)){
+                    $variable = $accessName . "_" . $variable;
                 }
+                self::setEnv($variable, $value);
             }
+        }
+    }
 
-            // We're checking 1 devel above doc root
-            if ( ! empty( $_SERVER['DOCUMENT_ROOT'] ) ) {
-                $files[] = dirname( $_SERVER['DOCUMENT_ROOT'] ) . '/.env';
+    public static function setEnv($variable, $value){
+        if (is_array($value) || is_object($value)){
+            self::setEnvironmentVariables($value, $variable);
+        } else {
+            putenv("$variable=$value");
+            $_ENV[$variable] = $value;
+        }
+    }
+
+    public static function arrayToObject($array){
+        $object = (object) $array;
+        foreach ($object as $variable => $value){
+            if (is_array($value)){
+                $object->$variable = (object) self::arrayToObject($value);
             }
+        }
+        return((object) $object);
+    }
 
-            if ( defined('ABSPATH') ) { // WordPress set up.
-                $files[] = dirname(ABSPATH) . '/.env';
-                $files[] = ABSPATH . '/.env';
+    public static function objectToArray($object){
+        $array = [];
+        foreach ($object as $variable => $value){
+            if (is_object($value)){
+                $array[$variable] = (array) self::objectToArray($value);
             }
+        }
+        return((array) $array);
+    }
 
-            if ( ! empty( $_SERVER['DOCUMENT_ROOT'] ) ) {
-                $files[] = $_SERVER['DOCUMENT_ROOT'] . '/.env';
-            }
+    public function setData($data){
+        //parent::__construct($data, \ArrayObject::ARRAY_AS_PROPS);
+        parent::__construct($data);
+        $this->_data = self::arrayToObject($data);
+    }
 
-            $files[] = __DIR__ . '/.env';
+    public function data(){
+        return $this->_data;
+    }
 
-            $files = array_unique($files);
+    public function serialize()
+    {
+        return(serialize($this->_data));
+    }
 
-            foreach ($files as $checked_file) {
-                if (file_exists($checked_file)) {
-                    $file = $checked_file;
-                    $found = 1;
-                    break;
+    public function unserialize($serialized)
+    {
+        $this->setData(unserialize($serialized));
+    }
+
+    public function __get($name)
+    {
+        if ($name[0] == "_") {
+            return $this->$name;
+        }
+        if (is_array($this->_data)){
+            if (array_key_exists($name, $this->_data)){
+                if (is_array($this->_data[$name]) || is_object($this->_data[$name])){
+                    return self::arrayToObject($this->_data[$name]);
+                } else {
+                    return $this->_data[$name];
                 }
+            } else {
+                return "";
+            }
+        } else {
+            if (isset($this->_data->$name)){
+                if (is_array($this->_data->$name) || is_object($this->_data->$name)){
+                    return self::arrayToObject($this->_data->$name);
+                } else {
+                    return $this->_data->$name;
+                }
+            } else {
+                return "";
             }
         }
-
-        if ( empty($file) || empty($found) || ! @file_exists($file) ) { // could produce warnings if outside of open base dir
-            return $data;
-        }
-
-        $buff = file_get_contents($file, LOCK_SH);
-        $lines = explode("\n", $buff);
-        $lines = array_map('trim', $lines);
-        $lines = array_unique($lines); // no dups
-        $lines = array_filter($lines); // rm empty lines
-
-        foreach ($lines as $line) {
-            $first_char = substr($line, 0, 1);
-
-            // empty or single line comments
-            if (empty($line) || $first_char == '#' || $first_char == ';' || ($first_char == '/' && substr($line, 1, 1) == '/')) {
-                continue;
-            }
-
-            $eq_pos = strpos($line, '=');
-
-            if ($eq_pos === false) {
-                continue;
-            }
-
-            $key = substr($line, 0, $eq_pos);
-            $key = trim($key, '\'" ');
-            $key = strtoupper($key);
-            $val = substr($line, $eq_pos + 1);
-            $val = str_replace('=', '', $val); // jic
-            $pos = strpos($val, '#'); // does the value have a comment ?
-            // rm comment from value field if not prefixed by a slash \
-            if (($pos !== false) && substr($val, $pos - 1, 1) != "\\" ) {
-                $val = substr($val, 0, $pos);
-            }
-            $val = trim($val, '\'" ');
-            $data[$key] = $val;
-        }
-        return $data;
     }
 
-    /**
-     * Loads, updates env and defines php const
-     * @param array $inpData
-     * @return bool
-     */
-    public function run(array $inpData = []): bool {
-        $data = $this->read();
-        $data = array_replace_recursive($inpData, $data);
-        if (empty($data)) {
-            return false;
+    public function __set($name, $value)
+    {
+        if ($name[0] == "_") {
+            $this->$name = $value;
+        } else {
+            if (is_object($this->_data)){
+                $this->_data->$name = $value;
+            } else {
+                $this->_data[$name] = $value;
+            }
+            //$this[$name] = $value;
+            self::setData($this->_data);
+            parent::offsetSet($name, $value);
+            self::setEnv($name, $value);
         }
-        $this->updateEnv( $data );
-        $this->defineConst( $data );
-
-        return true;
     }
+
+    public function offsetSet($index, $newval)
+    {
+        $this->__set($index, $newval);
+        parent::offsetSet($index, $newval);
+    }
+
+    public function offsetGet($index)
+    {
+        //return $this->__get($index);
+        /*if (is_object($this->_data)){
+            if (is_object($this->_data->$index)){
+                return $this->__get(self::objectToArray($this->_data->$index));
+            } else {
+                return $this->_data->$index;
+            }
+        } else {
+            if (is_object($this->_data[$index])){
+                return $this->__get(self::objectToArray($this->_data[$index]));
+            } else {
+                return $this->_data[$index];
+            }
+        }*/
+        return parent::offsetGet($index);
+    }
+
+    public function offsetExists($index)
+    {
+        /*if (is_array($this->_data) || is_a($this->_data, \ArrayObject::class)){
+            return array_key_exists($index, $this->_data);
+        } else {
+            return (isset($this->_data->$index) || property_exists($this->_data, $index));
+        }*/
+        return parent::offsetExists($index);
+    }
+
 }

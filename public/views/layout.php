@@ -60,18 +60,13 @@
         <!--Title-->
         <div class="font-sans">
             <p class="text-base md:text-sm text-green-500 font-bold">
-                &lt; <a href="#" class="text-base md:text-sm text-green-500 font-bold no-underline hover:underline">BACK TO DEFAULT</a></p>
+                &lt; <a href="#" class="text-base md:text-sm text-green-500 font-bold no-underline hover:underline">BACK TO DEFAULT SCHEMA</a></p>
             <h1 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-2 text-3xl md:text-4xl">
                 Welcome to <span><?= env('APP_TITLE') ?></span>
             </h1>
             <p class="text-sm md:text-base font-normal text-gray-600">Published <?= date("F j, Y, g:i a");  ?></p>
         </div>
 
-
-        <!--Post Content-->
-
-
-        <!--Lead Para-->
         <p class="py-6">
             👋 Welcome fellow <a class="text-green-500 no-underline hover:underline"
                                 href="https://www.tailwindcss.com">Data Capturer</a> and data security fan.
@@ -79,181 +74,193 @@
             You are currently viewing the expected POST data when you to a POST request to this current url. You did a GET request this time, try updating the method="POST" on the html FORM tag
         </p>
 
-        <p class="py-6">The basic blog page layout is available and all using the default Tailwind CSS classes
-            (although there are a few hardcoded style tags). If you are going to use this in your project, you will
-            want to convert the classes into components.</p>
-
-
-        <h1 class="py-2 font-sans">Heading 1</h1>
-        <h2 class="py-2 font-sans">Heading 2</h2>
-        <h3 class="py-2 font-sans">Heading 3</h3>
-        <h4 class="py-2 font-sans">Heading 4</h4>
-        <h5 class="py-2 font-sans">Heading 5</h5>
-        <h6 class="py-2 font-sans">Heading 6</h6>
-
-        <p class="py-6">Sed dignissim lectus ut tincidunt vulputate. Fusce tincidunt lacus purus, in mattis tortor
-            sollicitudin pretium. Phasellus at diam posuere, scelerisque nisl sit amet, tincidunt urna. Cras nisi
-            diam, pulvinar ut molestie eget, eleifend ac magna. Sed at lorem condimentum, dignissim lorem eu,
-            blandit massa. Phasellus eleifend turpis vel erat bibendum scelerisque. Maecenas id risus dictum,
-            rhoncus odio vitae, maximus purus. Etiam efficitur dolor in dolor molestie ornare. Aenean pulvinar diam
-            nec neque tincidunt, vitae molestie quam fermentum. Donec ac pretium diam. Suspendisse sed odio risus.
-            Nunc nec luctus nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-            himenaeos. Duis nec nulla eget sem dictum elementum.</p>
-
-        <ol>
-            <li class="py-3">Maecenas accumsan lacus sit amet elementum porta. Aliquam eu libero lectus. Fusce
-                vehicula dictum mi. In non dolor at sem ullamcorper venenatis ut sed dui. Ut ut est quam.
-                Suspendisse quam quam, commodo sit amet placerat in, interdum a ipsum. Morbi sit amet tellus
-                scelerisque tortor semper posuere.
-            </li>
-            <li class="py-3">Morbi varius posuere blandit. Praesent gravida bibendum neque eget commodo. Duis auctor
-                ornare mauris, eu accumsan odio viverra in. Proin sagittis maximus pharetra. Nullam lorem mauris,
-                faucibus ut odio tempus, ultrices aliquet ex. Nam id quam eget ipsum luctus hendrerit. Ut eros
-                magna, eleifend ac ornare vulputate, pretium nec felis.
-            </li>
-            <li class="py-3">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                Nunc vitae pretium elit. Cras leo mauris, tristique in risus ac, tristique rutrum velit. Mauris
-                accumsan tempor felis vitae gravida. Cras egestas convallis malesuada. Etiam ac ante id tortor
-                vulputate pretium. Maecenas vel sapien suscipit, elementum odio et, consequat tellus.
-            </li>
-        </ol>
-
-        <blockquote class="border-l-4 border-green-500 italic my-8 pl-8 md:pl-12">Example of blockquote - Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet
-            ligula.
-        </blockquote>
-
-        <p class="py-6">Example code block:</p>
-        <pre class="bg-gray-900 rounded text-white font-mono text-base p-2 md:p-4">
-				<code class="break-words whitespace-pre-wrap">
-&lt;header class="site-header outer"&gt;
-&lt;div class="inner"&gt;
-{{&gt; "site-nav"}}
-&lt;/div&gt;
-&lt;/header&gt;
-				</code>
-			</pre>
-
-
-        <!--/ Post Content-->
-
-    </div>
-
-    <!--Tags -->
-    <div class="text-base md:text-sm text-gray-500 px-4 py-6">
-        Tags: <a href="#" class="text-base md:text-sm text-green-500 no-underline hover:underline">Link</a> . <a
-            href="#" class="text-base md:text-sm text-green-500 no-underline hover:underline">Link</a>
-    </div>
-
-    <!--Divider-->
-    <hr class="border-b-2 border-gray-400 mb-8 mx-4">
-
-
-    <!--Subscribe-->
-    <div class="container px-4">
-        <div class="font-sans bg-gradient-to-b from-green-100 to-gray-100 rounded-lg shadow-xl p-4 text-center">
-            <h2 class="font-bold break-normal text-xl md:text-3xl">Subscribe to my Newsletter</h2>
-            <h3 class="font-bold break-normal text-gray-600 text-sm md:text-base">Get the latest posts delivered
-                right to your inbox</h3>
-            <div class="w-full text-center pt-4">
-                <form action="#">
-                    <div class="max-w-xl mx-auto p-1 pr-0 flex flex-wrap items-center">
-                        <input type="email" placeholder="youremail@example.com"
-                               class="flex-1 mt-4 appearance-none border border-gray-400 rounded shadow-md p-3 text-gray-600 mr-2 focus:outline-none">
-                        <button type="submit"
-                                class="flex-1 mt-4 block md:inline-block appearance-none bg-green-500 text-white text-base font-semibold tracking-wider uppercase py-4 rounded shadow hover:bg-green-400">
-                            Subscribe
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- /Subscribe-->
-
-
-    <!--Author-->
-    <div class="flex w-full items-center font-sans px-4 py-12">
-        <img class="w-10 h-10 rounded-full mr-4" src="http://i.pravatar.cc/300" alt="Avatar of Author">
-        <div class="flex-1 px-2">
-            <p class="text-base font-bold text-base md:text-xl leading-none mb-2">Jo Bloggerson</p>
-            <p class="text-gray-600 text-xs md:text-base">Minimal Blog Tailwind CSS template by <a
-                    class="text-green-500 no-underline hover:underline"
-                    href="https://www.tailwindtoolbox.com">TailwindToolbox.com</a></p>
-        </div>
-        <div class="justify-end">
-            <button
-                    class="bg-transparent border border-gray-500 hover:border-green-500 text-xs text-gray-500 hover:text-green-500 font-bold py-2 px-4 rounded-full">
-                Read
-                More
-            </button>
-        </div>
-    </div>
-    <!--/Author-->
-
-    <!--Divider-->
-    <hr class="border-b-2 border-gray-400 mb-8 mx-4">
-
-    <!--Next & Prev Links-->
-    <div class="font-sans flex justify-between content-center px-4 pb-12">
-        <div class="text-left">
-            <span class="text-xs md:text-sm font-normal text-gray-600">&lt; Previous Post</span><br>
-            <p><a href="#"
-                  class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Blog
-                title</a></p>
-        </div>
-        <div class="text-right">
-            <span class="text-xs md:text-sm font-normal text-gray-600">Next Post &gt;</span><br>
-            <p><a href="#"
-                  class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Blog
-                title</a></p>
-        </div>
-    </div>
-
-
-    <!--/Next & Prev Links-->
-
-</div>
-<!--/container-->
-
-<footer class="bg-white border-t border-gray-400 shadow">
-    <div class="container max-w-4xl mx-auto flex py-8">
-
-        <div class="w-full mx-auto flex flex-wrap">
-            <div class="flex w-full md:w-1/2 ">
-                <div class="px-8">
-                    <h3 class="font-bold text-gray-900">About</h3>
-                    <p class="py-4 text-gray-600 text-sm">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mi ut felis tempus
-                        commodo nec id erat. Suspendisse consectetur dapibus velit ut lacinia.
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex w-full md:w-1/2">
-                <div class="px-8">
-                    <h3 class="font-bold text-gray-900">Social</h3>
-                    <ul class="list-reset items-center text-sm pt-3">
+        <p class="py-6">
+            Every schema has the following sections, most of the schema will be defined and but there are some fields at the end under the stats and errors that wil be dynamically populated when a submission is made
+            <ul>
+                <li>
+                    <b>auth:</b>
+                    <span> This is not a user name and password kind of auth but just a domain name and ip address lookup of the server sending the data</span>
+                </li>
+                <li>
+                    <b>meta:</b>
+                    <span>  This sections collect meta data with every post of request, and it saves the the referrer, ip_address, date, time and execution </span>
+                </li>
+                <li>
+                    <b>storage:</b>
+                    <span>In this section all the info ae grouped to save the incoming data to the correct place, and what to do in the case of a error. The fields in this section is:</span>
+                    <ul>
                         <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1"
-                               href="#">Add social link</a>
+                             "endpoint": "Patient",
                         </li>
                         <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1"
-                               href="#">Add social link</a>
+                            "model_name": "Patient",
                         </li>
                         <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1"
-                               href="#">Add social link</a>
+                            "description": "Capture patient details with 'Health ID Number' as the unique ID",
+                        </li>
+                        <li>
+                            "id_field_name": "HIN"
+                        </li>
+                        <li>
+                             "id_field_required": true
+                        </li>
+                        <li>
+                            "save_if_error": true
+                        </li>
+                        <li>
+                            "save_file": "${HIN} ${last_name} ${DATETIME} ${REVISION}"
+                        </li>
+                        <li>
+                            "save_path": "patients/${health_card_number}/${save_file}"
                         </li>
                     </ul>
-                </div>
-            </div>
-        </div>
+                </li>
+                <li>
+                    <b>notify:</b>
+                    <span>Here you can add email addresses to be notified of success, errors or all submissions</span>
+                </li>
+                <li>
+                    <b>fields:</b>
+                    <span>Each field can have the following options / attributes</span>
+                    <ul>
+                        <li>
+                            <b>name: </b>
+                            <span>This is the name of the input field</span>
+                        </li>
+                        <li>
+                            <b>type: </b>
+                            <span>This can be any one of the basic scalar types plus some more like email, here is a list of all the types supported here</span>
+                            <ul>
+                                <li>"int"</li>
+                                <li>"boolean"</li>
+                                <li>"float"</li>
+                                <li>"domain"</li>
+                                <li>"url"</li>
+                                <li>"email"</li>
+                                <li>"ip_address"</li>
+                                <li>"mac_address"</li>
+                                <li>"string"</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <b>validate: </b>
+                            <span>The validation servers two purposes:</span>
+                            <br/>
+                            1. To tell the application what data to expect
+                            <br/>
+                            2. To help the users enter valid data
+                            <br/>
+                            The following validation can be specified
+                            <ul>
+                                <li>
+                                    "format": "mm/dd/yyyy" (This is for when the type is defined as a date or datetime, then you can use the format validator to specify the format)
+                                </li>
+                                <li>
+                                    "required": true or false
+                                </li>
+                                <li>
+                                    "min_length": 5 (define in amount of characters)
+                                </li>
+                                <li>
+                                    "max_length": 10 (define in amount of characters)
+                                </li>
+                                <li>
+                                    "options": ["Y","N"] Define a list of options
+                                </li>
+                                <li>
+                                    "special_chars": true or false
+                                </li>
+                                <li>
+                                    "allowed_chars": ["-","!"]  (define a list of allowed characters that will override the previous rule)
+                                </li>
+                                <li>
+                                    "disallowed_chars": ["-","&"]  (define a list of disallowed characters? that will override both the prev 2 rules)
+                                </li>
+                                <li>
+                                    "allow_spaces": true or false
+                                </li>
+                                <li>
+                                    "default": "N"  (Specify a default value, if a field is required and have a default value then it will pass)
+                                </li>
+                                <li>
+                                    "regex": for any validation that is not covered by any of the previous rules
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <b>hints: </b>
+                            <span>Under hints there are two properties to set</span>
+                            <ul>
+                                <li>
+                                    "placeholder": "First Name"    (This is when you are also using the JSON to generate your forms)
+                                </li>
+                                <li>
+                                    "error": "Error Message when the validation did not pass"
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <b>stats: </b>
+                    <span>Stats on the form submission</span>
+                    <ul>
+                        <li>
+                            "field_count": amount of fields received in te POST
+                        </li>
+                        <li>"field_count": received in the POST</li>
+                        <li>"field_success_count": successful fields received in the POST</li>
+                        <li>"field_fail_count": failed fields received in the POST</li>
+                        <li>"upload_count": File uploads received in the POST</li>
+                        <li>"upload_success_count": Successful uploads received in the POST</li>
+                        <li>"upload_fail_count": Failed uploads received in the POST</li>
+                    </ul>
+                </li>
+                <li>
+                    <b>errors: </b>
+                    <span>List of errors you will receive after a submission if any</span>
+                    <ul>
+                        <li>
+                            "fields_failed": Count of fields failed
+                        </li>
+                        <li>
+                            "field_fail_reasons": The reasons for failing some fields
+                        </li>
+                        <li>
+                            "uploads_failed": Count of uploads failed
+                        </li>
+                        <li>
+                            "uploads_fail_reasons": Reasons for uploads failed
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </p>
+
+
+       <blockquote>
+            Using a Schema to receive a post your simply need to do a POST httpd request to the endpoint specified by die name of the json model, example: `patient.json` will be used when you POST to https://example.com/patient, this is case sensitive
+       </blockquote>
 
 
     </div>
-</footer>
+
+    <hr class="border-b-2 border-gray-400 mb-8 mx-4">
+
+    <div class="flex w-full items-center font-sans px-4 py-12">
+        <div class="flex-1 px-2">
+            <p class="text-base font-bold text-base md:text-xl leading-none mb-2">Charl Cronje</p>
+            <p class="text-gray-600 text-xs md:text-base">
+                Secure Data Capture & Storage by
+                <a class="text-green-500 no-underline hover:underline"
+                    href="https://cronje.me">
+                    https://blog.cronje.me
+                </a>
+            </p>
+        </div>
+    </div>
+    <hr class="border-b-2 border-gray-400 mb-8 mx-4">
+</div>
 
 <script>
     /* Progress bar */
