@@ -17,7 +17,7 @@ _____/\\\\\\\\\\\\__/\\\\\\\\\\\\\_______/\\\\\\\\\\\\___________________/\\\\\\
 
 For usage and development notes: 
 
-# [Usage & DEV](./docs/README.md)
+# [Usage & DEV](./docs/README.md) <-CLICK THIS LINK
 
 ## Original product discussion
 
