@@ -15,7 +15,9 @@ _____/\\\\\\\\\\\\__/\\\\\\\\\\\\\_______/\\\\\\\\\\\\___________________/\\\\\\
 01110010   01100101   00100110   01010011   01110100   01101111   01110010   01100001   01100111   01100101 
 ```
 
-For usage and development notes: [Usage & DEV](./docs/README.md)
+For usage and development notes: 
+
+# [Usage & DEV](./docs/README.md)
 
 ## Original product discussion
 
