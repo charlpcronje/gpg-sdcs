@@ -2,8 +2,7 @@
 
 function env($var) {
     $env = new DotEnv();
-    var_dump($_ENV);
-    return $_ENV['ERROR_REPORTING'];
+    return $_ENV[$var];
 }
 
 function isClosure($var): bool {

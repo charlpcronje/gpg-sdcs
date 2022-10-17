@@ -69,7 +69,7 @@ function getCallingClass() {
  * @return void
  */
 function note(string $message) {
-    return Log::info($message);
+    Log::getInstance()->info($message);
 }
 
 /**
@@ -77,29 +77,29 @@ function note(string $message) {
  * @return void
  */
 function debug(string $message) {
-    Log::debug($message);
+    Log::getInstance()->debug($message);
 }
 
 function errorLog(string $message) {
-    Log::error($message);
+    Log::getInstance()->error($message);
 }
 
 function warning(string $message) {
-    Log::warning($message);
+    Log::getInstance()->warning($message);
 }
 
 function critical(string $message) {
-    Log::critical($message);
+    Log::getInstance()->critical($message);
 }
 
 function notice(string $message) {
-    Log::notice($message);
+    Log::getInstance()->notice($message);
 }
 
 function alert(string $message) {
-    Log::alert($message);
+    Log::getInstance()->alert($message);
 }
 
 function emergency(string $message) {
-    Log::emergency($message);
+    Log::getInstance()->emergency($message);
 }

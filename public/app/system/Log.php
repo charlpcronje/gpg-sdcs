@@ -1,8 +1,8 @@
 <?php /** @noinspection PhpMissingFieldTypeInspection */
 
 class Log {
-    public static Log $instance;
-    private array $params;
+    public static $instance;
+    public array $params = [];
     private int $logSize;
     private string $file;
     private $fh;
@@ -49,11 +49,16 @@ class Log {
         'write' => 'The logfile could not be written. Check logfile: ',
     ];
     // set logfile name and options
-    public function __construct($params=[]) {
+    public function __construct(array $params = []) {
         if (!isset($paramas['path'])) {
-            $params['path'] = env('PATH_LOGS');
+            $params['path'] = env('STORAGE_PATH_LOGS');
         }
-        $this->params = array_merge($this->options, $params);
+        foreach($this->options as $key => $value) {
+            $this->params[$key] = $value;
+        }
+        foreach($params as $key => $value) {
+            $this->params[$key] = $value;
+        }
         // set default max logfile size
         $this->maxSize();
     }
@@ -202,6 +207,17 @@ class Log {
         } elseif ($this->params['syslog']){
             closelog();
         }
+    }
+
+
+    /**
+     * @return Log
+     */
+    public static function getInstance(): Log {
+        if (!isset(static::$instance)) {
+            static::$instance = new static([]);
+        }
+        return static::$instance;
     }
 
     /**
